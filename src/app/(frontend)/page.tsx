@@ -1,59 +1,61 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
 import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
-
-import config from '@/payload.config'
+import config from '@payload-config'
 import './styles.css'
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
+  const payload = await getPayload({ config })
 
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  const { docs: posts } = await payload.find({
+    collection: 'posts',
+    where: { status: { equals: 'published' } },
+    sort: '-publishedAt',
+    limit: 10,
+  })
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    <main className="wrap">
+      <p className="eyebrow">Payload CMS · Next.js App Router · Postgres</p>
+      <h1>Content your team edits, without touching the code.</h1>
+      <p className="lede">
+        Every post below is a database record, written in the Payload admin panel and read
+        server-side by a React Server Component. Each one shows the fields behind it, because
+        the point of a CMS is that the structure is visible and editable, not buried in markup.
+      </p>
+
+      {posts.length === 0 ? (
+        <p className="empty">
+          No published posts yet. Create one in the admin panel and set its status to Published.
+        </p>
+      ) : (
+        posts.map((post) => (
+          <article className="post" key={post.id}>
+            <div>
+              <h2>{post.title}</h2>
+              <p>Rendered on the server. No client-side fetch, no exposed credentials.</p>
+            </div>
+            <div className="meta">
+              <div><span>collection</span><span>posts</span></div>
+              <div><span>slug</span><span>/{post.slug}</span></div>
+              <div>
+                <span>status</span>
+                <span><em className="badge">{post.status}</em></span>
+              </div>
+              <div>
+                <span>published</span>
+                <span>
+                  {post.publishedAt
+                    ? new Date(post.publishedAt).toISOString().slice(0, 10)
+                    : '—'}
+                </span>
+              </div>
+            </div>
+          </article>
+        ))
+      )}
+
+      <p className="foot">
+        Admin panel at <a href="/admin">/admin</a> · Data on Neon Postgres · Deployed on Vercel
+      </p>
+    </main>
   )
 }
