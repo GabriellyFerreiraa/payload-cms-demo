@@ -38,7 +38,7 @@ Each post on the public page displays the fields behind it — collection, slug,
 - **Local API rendering** — `payload.find()` queries Postgres directly from a Server Component. No HTTP round trip, no API token in the render path.
 - **Draft/published states** — the public query filters on `status`, so unpublished work is never rendered.
 - **Rich text authoring** — content is stored as structured JSON rather than an HTML blob, so it can be rendered differently per surface.
-- **Credentials server-side only** — `DATABASE_URI` and `PAYLOAD_SECRET` are set as Vercel environment variables and carry no `NEXT_PUBLIC_` prefix, so they never enter the client bundle.
+- **Credentials server-side only** — `DATABASE_URL` and `PAYLOAD_SECRET` are set as Vercel environment variables and carry no `NEXT_PUBLIC_` prefix, so they never enter the client bundle.
 
 ### Tech stack
 
@@ -60,7 +60,7 @@ npm run dev
 The app runs at `http://localhost:3000`, the admin panel at `/admin`. Create a `.env` file first:
 
 ```
-DATABASE_URI=your_postgres_connection_string
+DATABASE_URL=your_postgres_connection_string
 PAYLOAD_SECRET=a_long_random_string
 ```
 
@@ -82,7 +82,7 @@ Cada post en la página pública muestra los campos que lo sostienen — colecci
 - **Renderizado con la Local API** — `payload.find()` consulta Postgres directamente desde un Server Component. Sin ida y vuelta HTTP, sin token de API en el camino del renderizado.
 - **Estados de borrador y publicado** — la consulta pública filtra por `status`, así que el trabajo sin publicar nunca se renderiza.
 - **Edición con texto enriquecido** — el contenido se guarda como JSON estructurado en lugar de un bloque de HTML, así puede renderizarse distinto según la superficie.
-- **Credenciales solo en el servidor** — `DATABASE_URI` y `PAYLOAD_SECRET` se cargan como variables de entorno en Vercel y no llevan el prefijo `NEXT_PUBLIC_`, por lo que nunca entran al bundle del cliente.
+- **Credenciales solo en el servidor** — `DATABASE_URL` y `PAYLOAD_SECRET` se cargan como variables de entorno en Vercel y no llevan el prefijo `NEXT_PUBLIC_`, por lo que nunca entran al bundle del cliente.
 
 ### Tecnologías utilizadas
 
@@ -104,7 +104,7 @@ npm run dev
 La app corre en `http://localhost:3000`, el panel de administración en `/admin`. Primero creá un archivo `.env`:
 
 ```
-DATABASE_URI=tu_connection_string_de_postgres
+DATABASE_URL=tu_connection_string_de_postgres
 PAYLOAD_SECRET=una_cadena_larga_y_aleatoria
 ```
 
@@ -126,7 +126,7 @@ Cada post na página pública mostra os campos por trás dele — coleção, slu
 - **Renderização com a Local API** — `payload.find()` consulta o Postgres direto de um Server Component. Sem ida e volta HTTP, sem token de API no caminho da renderização.
 - **Estados de rascunho e publicado** — a consulta pública filtra por `status`, então o trabalho não publicado nunca é renderizado.
 - **Edição com texto rico** — o conteúdo é salvo como JSON estruturado em vez de um bloco de HTML, então pode ser renderizado de formas diferentes conforme a superfície.
-- **Credenciais só no servidor** — `DATABASE_URI` e `PAYLOAD_SECRET` são variáveis de ambiente na Vercel e não levam o prefixo `NEXT_PUBLIC_`, então nunca entram no bundle do cliente.
+- **Credenciais só no servidor** — `DATABASE_URL` e `PAYLOAD_SECRET` são variáveis de ambiente na Vercel e não levam o prefixo `NEXT_PUBLIC_`, então nunca entram no bundle do cliente.
 
 ### Tecnologias utilizadas
 
@@ -148,7 +148,7 @@ npm run dev
 O app roda em `http://localhost:3000`, o painel de administração em `/admin`. Primeiro crie um arquivo `.env`:
 
 ```
-DATABASE_URI=sua_connection_string_do_postgres
+DATABASE_URL=sua_connection_string_do_postgres
 PAYLOAD_SECRET=uma_string_longa_e_aleatoria
 ```
 

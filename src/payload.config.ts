@@ -12,6 +12,18 @@ import { Posts } from './collections/Posts'
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
+if (!process.env.PAYLOAD_SECRET) {
+  throw new Error('PAYLOAD_SECRET is required and must not be empty.')
+}
+
+// Known deploy origins. Set NEXT_PUBLIC_SERVER_URL in Vercel to your own
+// domain if you move off payload-cms-demo-sigma.vercel.app — until then
+// this default keeps the current production admin panel working.
+const serverURL = process.env.NEXT_PUBLIC_SERVER_URL || 'https://payload-cms-demo-sigma.vercel.app'
+const allowedOrigins = Array.from(
+  new Set([serverURL, 'http://localhost:3000']),
+)
+
 export default buildConfig({
   admin: {
     user: Users.slug,
@@ -21,7 +33,10 @@ export default buildConfig({
   },
   collections: [Users, Media, Posts],
   editor: lexicalEditor(),
-  secret: process.env.PAYLOAD_SECRET || '',
+  secret: process.env.PAYLOAD_SECRET,
+  serverURL,
+  cors: allowedOrigins,
+  csrf: allowedOrigins,
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
